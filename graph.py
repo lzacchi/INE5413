@@ -39,7 +39,7 @@ def degree():
 def label():
     pass
 
-def neighbor():
+def neighbours():
     pass
 
 def weight():
