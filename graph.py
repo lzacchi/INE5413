@@ -20,7 +20,6 @@ contemplados para o grafo deverão ser:
 
 
 from collections import namedtuple
-import re
 
 Graph = namedtuple("Graph", "n_vertices vertices edges n_edges")
 
@@ -73,11 +72,17 @@ def read_edges(txt):
     edge_list = txt[(header_index+1):]
     return edge_list
 
+# input: a list like [ 'num "label"\n', 'num "label"\n', ... ]
+# output: a dictionary like {num: 'label', num: 'label', ...}
 def verticestxt_to_dict(vertices):
     vertices_dict = dict()
     for vertice in vertices:
-        num = int( vertice.split(" ")[0])
-        label = re.search('"(.*)"', vertice).group(1)    
+        vertice = vertice.replace('"','').replace('\n','') # cleaning string
+        vertice = vertice.split(" ")
+
+        num = int(vertice[0])
+        label = vertice[1]
+
         vertices_dict[num] = f'{label}'
     return vertices_dict
 
