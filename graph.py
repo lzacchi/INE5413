@@ -20,6 +20,7 @@ contemplados para o grafo deverão ser:
 
 
 from collections import namedtuple
+import re
 
 Graph = namedtuple("Graph", "n_vertices vertices edges n_edges")
 
@@ -58,9 +59,11 @@ def read(filename):
 def read_n_vertices(txt):
     return int(txt.replace("*vertices ", ""))
 
-
 def read_vertices(txt):
-    pass
+    header_index = txt.index("*vertices " + str(Graph.n_vertices) + "\n")
+    vertices_list = txt[(header_index+1):Graph.n_vertices +1]
+    vertices = verticestxt_to_dict(vertices_list)
+    return vertices
 
 def read_n_edges(txt):
     return len(Graph.edges)
@@ -70,6 +73,15 @@ def read_edges(txt):
     edge_list = txt[(header_index+1):]
     return edge_list
 
+def verticestxt_to_dict(vertices):
+    vertices_dict = dict()
+    for vertice in vertices:
+        num = int( vertice.split(" ")[0])
+        label = re.search('"(.*)"', vertice).group(1)    
+        vertices_dict[num] = f'{label}'
+    return vertices_dict
+
 # test
 read("./graph-samples/custom/yt.net")
 print(Graph.n_vertices)
+print(Graph.vertices)
