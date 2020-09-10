@@ -21,7 +21,7 @@ contemplados para o grafo deverão ser:
 
 from collections import namedtuple
 
-Graph = namedtuple("Graph", "n_vertices vertices edges")
+Graph = namedtuple("Graph", "n_vertices vertices edges n_edges")
 
 def get_n_vertices():
     Graph.n_vertices
@@ -53,6 +53,7 @@ def read(filename):
     Graph.n_vertices = read_n_vertices(txt[0])
     Graph.vertices = read_vertices(txt)
     Graph.edges = read_edges(txt)
+    Graph.n_edges = read_n_edges(txt)
 
 def read_n_vertices(txt):
     return int(txt.replace("*vertices ", ""))
@@ -61,10 +62,13 @@ def read_n_vertices(txt):
 def read_vertices(txt):
     pass
 
+def read_n_edges(txt):
+    return len(Graph.edges)
+
 def read_edges(txt):
     header_index = txt.index("*edges\n")
     edge_list = txt[(header_index+1):]
-    print(edge_list)
+    return edge_list
 
 # test
 read("./graph-samples/custom/yt.net")
