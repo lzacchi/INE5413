@@ -4,7 +4,7 @@
 
 import os
 import sys
-from graph import neighbours, read
+from graph import neighbours, read, Graph
 from typing import Tuple
 
 
@@ -18,7 +18,7 @@ def bfs(n_vertices: int) -> Tuple[dict, dict]:
         label = vertex[0]
         visited[label] = False
         distance[label] = float("inf")
-        predecessor[label] = None
+        ancestor[label] = None
 
     # Add starting node
     start = Graph.vertices[0]
@@ -32,17 +32,20 @@ def bfs(n_vertices: int) -> Tuple[dict, dict]:
         current_node = queue.pop()
         cnode_label = current_node[0]
 
-        for neightbour in neighbours(u):
-            n_label = neightbour[0]
+        for neighbour in neighbours(cnode_label):
+            n_label = neighbour[0]
             if not visited[n_label]:
                 visited[n_label] = True
-                distance[n_label] = distance(cnode_label) + 1
-                ancestor[n_label] = cnode_label
+                distance[n_label] = distance[cnode_label] + 1
+                ancestor[n_label] = n_label
+                queue.append(neighbour)
     return distance, ancestor
 
+
 if __name__ == "__main__":
-    print(f"Usage: ./{sys.argv[0] graphname}")
-    os._exit(-1)
+    if len(sys.argv) != 2:
+        print(f"Usage: ./{sys.argv[0]} graphname")
+        os._exit(-1)
 
     read(sys.argv[1])
     n_vertices = Graph.n_vertices
@@ -60,5 +63,5 @@ if __name__ == "__main__":
             frontiers[dist] = []
         frontiers[dist].append(label)
 
-    for k in frontiers.keys():
+    for k in sorted(frontiers.keys()):
         print(f"{str(k)}: {frontiers[k]}")

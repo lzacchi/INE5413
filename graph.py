@@ -32,7 +32,6 @@ def get_vertices():
 def get_edges():
     Graph.edges
 
-
 def degree(v):
     return( len(neighbours(v)))
 
@@ -41,12 +40,12 @@ def label(index):
     return [vertice[1] for vertice in Graph.vertices if vertice[0] == index][0]
 
 def neighbours(vertice,labeled=False):
-    result = [u for ((u,v),peso) in Graph.edges if v==vertice]+[v for ((u,v),peso) in Graph.edges if u==vertice]
-    return(list(dict.fromkeys(result)))
+    result = [(u, label(u)) for ((u,v),peso) in Graph.edges if v==vertice]+[(u, label(u)) for ((u,v),peso) in Graph.edges if u==vertice]
+    filtered = [t for t in result if t[0] != vertice]
+    return(list(dict.fromkeys(filtered)))
 
 def weight(u,v):
     return [edge[1] for edge in Graph.edges if edge[0] == (u,v)][0]
-
 
 def edge_exists(u,v):
     return( [edge for edge in Graph.edges if edge[0] == (u,v)] != [] )
@@ -90,11 +89,11 @@ def verticestxt_to_list(vertices):
         vertices_list.append((num, label))
     return vertices_list
 
-def edgestxt_to_list(edges): 
+def edgestxt_to_list(edges):
     edges_list = list()
     for edge in edges:
         clean_edge = edge.replace("\n","").split(" ")
-        
+
         source = int(clean_edge[0])
         dest = int(clean_edge[1])
         weight = float(clean_edge[2])
@@ -114,7 +113,6 @@ def ba_dum_testss():
     for edge in Graph.edges:
         print(f"Edge {edge[0]} weight is {weight(*edge[0])}") # unpacking edge[0] from (u,v) to u,v
 
-
     print("Check if there edges (u,v) and (v,u):")
     print("OBS: u is fixed as 1")
     for i in range(1,Graph.n_vertices+1):
@@ -133,4 +131,5 @@ def ba_dum_testss():
     for vertice in Graph.vertices:
         print(f"{label(vertice[0])}'s neighbours are: {neighbours(vertice[0])}")
 
-ba_dum_testss()
+if __name__ == "__main__":
+    ba_dum_testss()
