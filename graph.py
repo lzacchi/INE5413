@@ -38,20 +38,18 @@ def degree(v):
 
 # INDEX MUST TO BE > 0
 def label(index):
-    return(Graph.vertices[index])
+    return [vertice[1] for vertice in Graph.vertices if vertice[0] == index][0]
 
-def neighbours(v,labeled=False):
-    result = []
-    for i in range(1,Graph.n_edges+1):
-        if ((v, i) in Graph.edges or (i, v) in Graph.edges):
-            result.append(i)
+def neighbours(vertice,labeled=False):
+    result = [u for ((u,v),peso) in Graph.edges if v==vertice]+[v for ((u,v),peso) in Graph.edges if u==vertice]
     return(list(dict.fromkeys(result)))
 
 def weight(u,v):
-    return(Graph.edges[u,v]['weight'])
+    return [edge[1] for edge in Graph.edges if edge[0] == (u,v)][0]
+
 
 def edge_exists(u,v):
-    return((u,v) in Graph.edges)
+    return( [edge for edge in Graph.edges if edge[0] == (u,v)] != [] )
 
 def read(filename):
     file = open(filename, "r")
@@ -69,7 +67,7 @@ def read_n_vertices(txt):
 def read_vertices(txt):
     header_index = txt.index("*vertices " + str(Graph.n_vertices) + "\n")
     vertices_list = txt[(header_index+1):Graph.n_vertices +1]
-    vertices = verticestxt_to_dict(vertices_list)
+    vertices = verticestxt_to_list(vertices_list)
     return vertices
 
 def read_n_edges(txt):
@@ -78,35 +76,31 @@ def read_n_edges(txt):
 def read_edges(txt):
     header_index = txt.index("*edges\n")
     edge_list = txt[(header_index+1):]
-    edges = edgestxt_to_dict(edge_list)
+    edges = edgestxt_to_list(edge_list)
     return edges
 
-# input: a list like [ 'num "label"\n', 'num "label"\n', ... ]
-# output: a dictionary like {num: 'label', num: 'label', ...}
-def verticestxt_to_dict(vertices):
-    vertices_dict = dict()
+def verticestxt_to_list(vertices):
+    vertices_list = list()
     for vertice in vertices:
         vertice = vertice.replace('"','').replace('\n','') # cleaning string
         vertice = vertice.split(" ")
 
         num = int(vertice[0])
         label = vertice[1]
+        vertices_list.append((num, label))
+    return vertices_list
 
-        vertices_dict[num] = f'{label}'
-    return vertices_dict
-
-def edgestxt_to_dict(edges):
-    edges_dict = dict()
+def edgestxt_to_list(edges): 
+    edges_list = list()
     for edge in edges:
         clean_edge = edge.replace("\n","").split(" ")
         
         source = int(clean_edge[0])
         dest = int(clean_edge[1])
         weight = float(clean_edge[2])
+        edges_list.append(((dest, source), weight))
+    return edges_list
 
-        edges_dict[source,dest] = {'source': source, 'dest': dest, 'weight': weight}
-
-    return edges_dict
 
 # Tests function haha 😂😂
 def ba_dum_testss():
@@ -118,7 +112,7 @@ def ba_dum_testss():
 
     print("Weight of edges:")
     for edge in Graph.edges:
-        print(f"Edge {edge} weight is {weight(edge[0],edge[1])}")
+        print(f"Edge {edge[0]} weight is {weight(*edge[0])}") # unpacking edge[0] from (u,v) to u,v
 
 
     print("Check if there edges (u,v) and (v,u):")
@@ -131,12 +125,12 @@ def ba_dum_testss():
     print(f"Num. of vertices: {Graph.n_vertices}\n")
 
     for vertice in Graph.vertices:
-        print(f"Vertice {vertice} is labeled as {label(vertice)}")
+        print(f"Vertice {vertice[0]} is labeled as {label(vertice[0])}")
     print('\n')
     for vertice in Graph.vertices:
-        print(f"{vertice} degree is {degree(vertice)}")
+        print(f"{vertice[0]} (labeled as {vertice[1]}) degree is {degree(vertice[0])}")
 
     for vertice in Graph.vertices:
-        print(f"{label(vertice)}'s neighbours are: {neighbours(vertice)}")
+        print(f"{label(vertice[0])}'s neighbours are: {neighbours(vertice[0])}")
 
 ba_dum_testss()
