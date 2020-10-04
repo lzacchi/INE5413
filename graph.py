@@ -19,6 +19,7 @@ contemplados para o grafo deverão ser:
         no formato especificado ao final deste docu-mento.'''
 
 
+from math import inf
 from collections import namedtuple
 
 Graph = namedtuple("Graph", "n_vertices vertices edges n_edges")
@@ -39,13 +40,17 @@ def degree(v):
 def label(index):
     return [vertice[1] for vertice in Graph.vertices if vertice[0] == index][0]
 
-def neighbours(vertice,labeled=False):
+def neighbours(vertice):
     result = [(u, label(u)) for ((u,v),peso) in Graph.edges if v==vertice]+[(u, label(u)) for ((u,v),peso) in Graph.edges if u==vertice]
     filtered = [t for t in result if t[0] != vertice]
     return(list(dict.fromkeys(filtered)))
 
-def weight(u,v):
-    return [edge[1] for edge in Graph.edges if edge[0] == (u,v)][0]
+def weight(u,v, directed=False):
+    if directed:
+        res = [edge[1] for edge in Graph.edges if edge[0] == (u,v)]
+    else:
+        res = [edge[1] for edge in Graph.edges if edge[0] == (u,v) or edge[0] == (v,u)]
+    return res[0] if res else inf
 
 def edge_exists(u,v):
     return( [edge for edge in Graph.edges if edge[0] == (u,v)] != [] )
