@@ -6,22 +6,23 @@ from random import randrange
 
 def hierholzer(graph:Graph):
     edges = [edge[0] for edge in graph.edges]
-    # e_visited = {}
 
-
-    for vertex in graph.vertices:
-        for neighbour in neighbours(vertex[0]):
-            if (vertex[0], neighbour[0]) not in edges:
-                edges.append((vertex[0], neighbour[0]))
-            if (neighbour[0], vertex[0]) not in edges:
-                edges.append((neighbour[0], vertex[0]))
+    # The graphs we're working with are undirected
+    # So an edge (v, u) is the same as an edge (u, v)
+    # This bit check which of the "repeated" edges are
+    # not present and adds them to the list
+    for v in graph.vertices:
+        for n in neighbours(v[0]):
+            if (v[0], n[0]) not in edges:
+                edges.append((v[0], n[0]))
+            if (n[0], v[0]) not in edges:
+                edges.append((n[0], v[0]))
 
     # Initially, all edges are marked unvisited
     e_visited = {edge: False for edge in edges}
 
     # Here we choose a vertex arbitrarily
-    # In this case it's the first vertex on the Graph
-    vertex = graph.vertices[0]
+    vertex = graph.vertices[randrange(len(graph.vertices))]
 
     (r, cycle) = eulerian_subcycle(graph, vertex[0], e_visited)
 
@@ -44,8 +45,9 @@ def eulerian_subcycle(graph, v, e_visited):
         for u in neighbours(v):
             edge = (v, u[0])
 
-            if e_visited[edge] == False:
+            if e_visited[edge] == False and e_visited[u[0], v] == False:
                 e_visited[edge] = True
+                e_visited[u[0], v] = True
                 v = u[0]
                 cycle.append(v)
                 v_isolated = False
