@@ -5,11 +5,19 @@ from random import randrange
 
 
 def hierholzer(graph:Graph):
-    e_visited = {}
+    edges = [edge[0] for edge in graph.edges]
+    # e_visited = {}
+
+
+    for vertex in graph.vertices:
+        for neighbour in neighbours(vertex[0]):
+            if (vertex[0], neighbour[0]) not in edges:
+                edges.append((vertex[0], neighbour[0]))
+            if (neighbour[0], vertex[0]) not in edges:
+                edges.append((neighbour[0], vertex[0]))
 
     # Initially, all edges are marked unvisited
-    for edge in graph.edges:
-        e_visited[edge[0]] = False
+    e_visited = {edge: False for edge in edges}
 
     # Here we choose a vertex arbitrarily
     # In this case it's the first vertex on the Graph
@@ -33,21 +41,14 @@ def eulerian_subcycle(graph, v, e_visited):
     while True:
         v_isolated = True
 
-        print(v)
-        print (neighbours(v))
         for u in neighbours(v):
-            print("Got here")
             edge = (v, u[0])
-
-            print(edge)
 
             if e_visited[edge] == False:
                 e_visited[edge] = True
                 v = u[0]
                 cycle.append(v)
                 v_isolated = False
-
-                print(e_visited)
 
                 break
 
@@ -57,11 +58,8 @@ def eulerian_subcycle(graph, v, e_visited):
         if v == t:
             break
 
-
-    print("second half of algorithm")
     for x in cycle:
         for w in neighbours(x):
-            print(e_visited[(x, w[0])])
             if e_visited[(x, w[0])] == False:
                 (r, aux_cycle) = eulerian_subcycle(graph, x, e_visited)
                 if r == False:
