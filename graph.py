@@ -41,7 +41,7 @@ def label(index):
     return [vertice[1] for vertice in Graph.vertices if vertice[0] == index][0]
 
 def neighbours(vertice):
-    result = [(u, label(u)) for ((u,v),peso) in Graph.edges if v==vertice]+[(u, label(u)) for ((u,v),peso) in Graph.edges if u==vertice]
+    result = [(u, label(u)) for ((v,u),peso) in Graph.edges if v==vertice]+[(u, label(u)) for ((v,u),peso) in Graph.edges if u==vertice]
     filtered = [t for t in result if t[0] != vertice]
     return(list(dict.fromkeys(filtered)))
 
@@ -102,7 +102,7 @@ def edgestxt_to_list(edges):
         source = int(clean_edge[0])
         dest = int(clean_edge[1])
         weight = float(clean_edge[2])
-        edges_list.append(((dest, source), weight))
+        edges_list.append(((source, dest), weight))
     return edges_list
 
 

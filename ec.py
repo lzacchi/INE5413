@@ -12,8 +12,8 @@ def hierholzer(graph:Graph):
         e_visited[edge[0]] = False
 
     # Here we choose a vertex arbitrarily
-    vertex = graph.vertices[randrange(len(graph.vertices))]
-
+    # In this case it's the first vertex on the Graph
+    vertex = graph.vertices[0]
 
     (r, cycle) = eulerian_subcycle(graph, vertex[0], e_visited)
 
@@ -31,22 +31,27 @@ def eulerian_subcycle(graph, v, e_visited):
     t = v
 
     while True:
-        ver_nei = True
+        v_isolated = True
 
+        print(v)
+        print (neighbours(v))
         for u in neighbours(v):
-            edge = (u[0], v)
+            print("Got here")
+            edge = (v, u[0])
+
             print(edge)
-            print(e_visited[edge])
 
             if e_visited[edge] == False:
-                ver_nei = False
                 e_visited[edge] = True
                 v = u[0]
                 cycle.append(v)
+                v_isolated = False
+
+                print(e_visited)
+
                 break
 
-        if ver_nei:
-            print("I got to the weird stuff")
+        if v_isolated:
             return (False, None)
 
         if v == t:
@@ -55,15 +60,15 @@ def eulerian_subcycle(graph, v, e_visited):
 
     print("second half of algorithm")
     for x in cycle:
-        for n in neighbours(x):
-            print(e_visited[(n[0], x)])
-            if e_visited[(n[0], x)] == False:
+        for w in neighbours(x):
+            print(e_visited[(x, w[0])])
+            if e_visited[(x, w[0])] == False:
                 (r, aux_cycle) = eulerian_subcycle(graph, x, e_visited)
                 if r == False:
                     return (False, None)
                 else:
-                    aux = cycle.index(x) + 1
-                    cycle = cycle[:cycle.index(x)] + aux_cycle + cycle[aux:]
+                    # append subcycles
+                    cycle = cycle[:cycle.index(x)] + aux_cycle + cycle[(cycle.index(x) +1):]
 
     return (True, cycle)
 
