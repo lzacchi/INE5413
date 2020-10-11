@@ -21,8 +21,8 @@ def hierholzer(graph:Graph):
     # Initially, all edges are marked unvisited
     e_visited = {edge: False for edge in edges}
 
-    # Here we choose a vertex arbitrarily
-    vertex = graph.vertices[randrange(len(graph.vertices))]
+    # We begin the algorithm from the first vertex
+    vertex = graph.vertices[0]
 
     (r, cycle) = eulerian_subcycle(graph, vertex[0], e_visited)
 
