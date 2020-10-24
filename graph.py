@@ -1,24 +1,3 @@
-'''
-Crie um tipo estruturado de dados ou uma
-classe que represente um grafo
-não-dirigido e ponderadoG(V, E, w), no qual
-V é o conjunto de vértices,E é o conjunto
-de arestas e w:E→R é a função que mapeia
-o peso de cada aresta {u, v}∈E.  As operações/métodos
-contemplados para o grafo deverão ser:
-
-    •qtdVertices(): retornr a quantidade de vértices;
-    •qtdArestas(): retorna a quantidade de arestas;
-    •grau(v): retorna o grau do v ́erticev;
-    •rotulo(v): retorna o r ́otulo do v ́erticev;
-    •vizinhos(v): retorna os vizinhos do v ́erticev;
-    •haAresta(u, v): se{u, v}∈E, retorna verdadeiro; se n ̃ao existir, retorna falso;
-    •peso(u, v): se{u, v}∈E, retorna o peso da aresta{u, v};
-        se nao existir, retorna um valor infinito positivo1;
-    •ler(arquivo)2: deve carregar um grafo a partir de um arquivo
-        no formato especificado ao final deste docu-mento.'''
-
-
 import os
 import sys
 from math import inf
