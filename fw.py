@@ -39,7 +39,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print(f"Usage: python {sys.argv[0]} <graph-path>")
         os._exit(-1)
-    read(sys.argv[0])
+    read(sys.argv[1])
 
     matrix = floyd_warshall(Graph)
     for i in range(Graph.n_vertices):

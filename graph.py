@@ -47,11 +47,11 @@ def read(filename, directed=False):
     txt = file.readlines()
     file.close()
 
+    Graph.directed = directed
     Graph.n_vertices = read_n_vertices(txt[0])
     Graph.vertices = read_vertices(txt)
     Graph.edges = read_arcs(txt) if Graph.directed else read_edges(txt)
     Graph.n_edges = read_n_edges(txt)
-    Graph.directed = directed
 
 def read_n_vertices(txt):
     return int(txt.replace("*vertices ", ""))
