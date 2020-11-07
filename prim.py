@@ -8,20 +8,20 @@ from math import inf
 def prim(graph:Graph):
     not_visited = [v[0] for v in graph.vertices]
     r = not_visited[0]
-    not_visited.remove(r)
+    not_visited.remove(r)  # we choose the first vertex
 
-    Q = []
+    Q = []  # priority queue
 
-    A = []
+    A = []  # mininum spanning tree
 
-    weight_sum = 0
+    weight_sum = 0  # combined value of the tree's edges
 
     while not_visited:
         for neighbour in neighbours(r):
             heapq.heappush(Q, (weight(neighbour[0], r), (neighbour[0], r) ))
 
         while Q:
-            e_weight, u = heapq.heappop(Q)
+            e_weight, u = heapq.heappop(Q)  # return edge with smallest weight
 
             if u[0] in not_visited:
                 next_r = u[0]
