@@ -16,7 +16,7 @@ def graph_coloring(graph):
 
     for v in vertices:
         color_tmp = [True for i in vertices]
-        for n in neighbours(v):
+        for n in neighbours(v[0]):
             if n in color_map:
                 color = color_map[n]
                 color_tmp[color] = False
