@@ -53,7 +53,7 @@ def edmonds_karp():
     sink_ = Graph.sink -1
 
     Graph.flow = [[0]* Graph.n_vertices for f in range(Graph.n_vertices)]
-gi
+
     while True:
         path = Breadth_first_search()
 
